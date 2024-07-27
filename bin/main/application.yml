@@ -1,0 +1,31 @@
+micronaut:
+  application:
+    name: myorganization
+netty:
+  default:
+    allocator:
+      max-order: 3
+
+  server:
+    cors:
+      enabled: true
+
+datasources:
+  default:
+    dialect: MYSQL
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: 'temp'
+    schema-generate: none
+    url: jdbc:mysql://myorganization-db:3306/idb?useSSL=false&zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true
+    username: root
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: true
+
+jackson:
+  serializationInclusion: ALWAYS

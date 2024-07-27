@@ -1,0 +1,34 @@
+version: '3'
+services:
+  myorganization-backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: myorganization-backend
+    ports:
+      - '3000:8080'
+    depends_on:
+      - myorganization-db
+    networks:
+      - myorganization-network
+    
+
+  myorganization-db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=temp
+      - MYSQL_DATABASE=idb
+    ports:
+      - 3307:3306
+    networks:
+      - myorganization-network
+    volumes:
+      - myorganization-volume:/var/lib/mysql
+
+
+
+networks:
+  myorganization-network:
+
+volumes:
+  myorganization-volume:
