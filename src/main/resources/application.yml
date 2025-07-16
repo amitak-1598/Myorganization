@@ -14,10 +14,12 @@ datasources:
   default:
     dialect: MYSQL
     driverClassName: com.mysql.cj.jdbc.Driver
-    password: 'temp'
+    password: root
     schema-generate: none
-    url: jdbc:mysql://myorganization-db:3306/idb?useSSL=false&zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/idb?useSSL=false&zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true
     username: root
+    
+    
 
 jpa:
   default:
