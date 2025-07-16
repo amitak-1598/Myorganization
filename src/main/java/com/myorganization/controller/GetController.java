@@ -162,6 +162,117 @@ public class GetController {
 		}
 
 	}
+	
+	
+	@Transactional
+	@Post("/dynamicorganizations")
+	public MutableHttpResponse<Map<String, Object>> getDynamicOrgnaizations(@Body Map<String, Object> body,
+	        @QueryValue("source") String source) {
+	    Map<String, Object> map = new HashMap<>();
+	    try {
+	        String include = "*";
+	        boolean requiretotalcount = false;
+	        String filterquery = "";
+	        int limit = 0;
+	        int offset = 0;
+	        String sort = "";
+
+	        if (body.containsKey("columnInclude")) {
+	            @SuppressWarnings("unchecked")
+	            List<String> columninclude = (List<String>) body.get("columnInclude");
+	            include = "";
+	            for (int i = 0; i < columninclude.size(); i++) {
+	                include += columninclude.get(i);
+	                if (i < columninclude.size() - 1) {
+	                    include += ", ";
+	                }
+	            }
+	        }
+
+	        if (body.containsKey("requiretotalcount")) {
+	            requiretotalcount = true;
+	        }
+
+	        if (body.containsKey("filter")) {
+	            @SuppressWarnings("unchecked")
+	            List<Object> filter = (List<Object>) body.get("filter");
+	            filterquery = function2(filter);
+	            filterquery = filterquery.replace("startswith", "LIKE");
+	            filterquery = filterquery.replace("contains", "LIKE");
+	            filterquery = "(" + filterquery + ")";
+	        }
+
+	        if (body.containsKey("sort")) {
+	            @SuppressWarnings("unchecked")
+	            List<Map<String, Object>> sortdata = (List<Map<String, Object>>) body.get("sort");
+	            Map<String, Object> sortresponse = sortdata.get(0);
+	            String selector = (String) sortresponse.get("selector");
+	            sort += selector;
+	            Boolean checkselect = (Boolean) sortresponse.get("desc");
+	            if (checkselect) {
+	                sort += " DESC";
+	            } else {
+	                sort += " ASC";
+	            }
+	        }
+
+	        if (body.containsKey("skip")) {
+	            offset = (int) body.get("skip");
+	        }
+	        if (body.containsKey("take")) {
+	            limit = (int) body.get("take");
+	        }
+
+	        Query d;
+	        int total = 0;
+
+	        StringBuilder queryBuilder = new StringBuilder("SELECT " + include + " FROM employees");
+
+	        if (!filterquery.isEmpty()) {
+	            queryBuilder.append(" WHERE ").append(filterquery);
+	        }
+
+	        if (!sort.isEmpty()) {
+	            queryBuilder.append(" ORDER BY ").append(sort);
+	        }
+
+	        if (limit > 0) {
+	            queryBuilder.append(" LIMIT ").append(limit);
+	        }
+
+	        if (offset > 0) {
+	            queryBuilder.append(" OFFSET ").append(offset);
+	        }
+
+	        String query = queryBuilder.toString();
+
+	        d = em.createNativeQuery(query, Tuple.class);
+	        @SuppressWarnings("unchecked")
+	        List<Tuple> list = d.getResultList();
+	        List<Map<String, Object>> data = toList(list);
+	        map.put("response", data);
+
+	        if (requiretotalcount) {
+	            String countQuery = "SELECT COUNT(*) FROM employees";
+	            if (!filterquery.isEmpty()) {
+	                countQuery += " WHERE " + filterquery;
+	            }
+	            Query d1 = em.createNativeQuery(countQuery);
+	            total = ((Number) d1.getSingleResult()).intValue();
+	        }
+	        map.put("count", total);
+
+	        return HttpResponse.ok(map);
+
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        map.put("response", "Something Went Wrong");
+	        return HttpResponse.badRequest(map);
+	    }
+	}
+	
+	
+	
 
 	public List<Map<String, Object>> convertTupleListToMapList(List<Tuple> tupleList) {
 		return tupleList.stream().map(tuple -> {
