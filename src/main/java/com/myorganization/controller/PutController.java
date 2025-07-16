@@ -1,6 +1,8 @@
 package com.myorganization.controller;
 
 import com.myorganization.modelclass.Employees;
+import com.myorganization.responsemodel.Response;
+import com.myorganization.responsemodel.ResponseFormat;
 import com.myorganization.service.UpdateService;
 
 import io.micronaut.http.HttpResponse;
@@ -14,17 +16,26 @@ import jakarta.inject.Inject;
 public class PutController {
 
 	@Inject
+	ResponseFormat responseFormat;
+
+	@Inject
 	UpdateService updateservice;
 
 	@Put("/upEmployee")
-	public HttpResponse<String> updateEmployeeField(@Body Employees body, @QueryValue("source") String source) {
+	public HttpResponse<Response> updateEmployeeField(@Body Employees body, @QueryValue("source") String source) {
 		try {
 			updateservice.updateEmployee(body);
-			return HttpResponse.created("Data Updated Successfully");
+
+			Response success = responseFormat.getSuccessResponse("Employee updated successfully");
+
+			return HttpResponse.ok(success);
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			return HttpResponse.badRequest("Something Went Wrong");
-		}
 
+			Response error = responseFormat.getErrorResponse(ex, "Failed to update employee");
+
+			return HttpResponse.serverError().body(error);
+		}
 	}
 }
