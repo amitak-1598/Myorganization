@@ -14,6 +14,9 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.transaction.Transactional;
 
+import com.myorganization.responsemodel.Response;
+import com.myorganization.responsemodel.ResponseFormat;
+
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Body;
@@ -29,28 +32,28 @@ public class GetController {
 	@Inject
 	EntityManager em;
 
+	@Inject
+	ResponseFormat responseFormat;
+
 	@Transactional
 	@Get("/employee")
-	public MutableHttpResponse<Map<String, Object>> getEmployee(@QueryValue("source") String source) {
-		Map<String, Object> map = new HashMap<>();
+	public HttpResponse<Response> getEmployee(@QueryValue("source") String source) {
 		try {
+			String sql = "SELECT * FROM employees";
+			Query query = em.createNativeQuery(sql, Tuple.class);
 
-			Query d;
-
-			String query = "SELECT * FROM employees";
-
-			d = em.createNativeQuery(query, Tuple.class);
 			@SuppressWarnings("unchecked")
-			List<Tuple> list = d.getResultList();
-			List<Map<String, Object>> data = toList(list);
-			map.put("response", data);
-			return HttpResponse.ok(map);
+			List<Tuple> resultList = query.getResultList();
+
+			List<Map<String, Object>> employees = toList(resultList);
+			Response success = responseFormat.getSuccessResponse(employees);
+			return HttpResponse.ok(success);
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			map.put("response", "Something Went Wrong");
-			return HttpResponse.badRequest(map);
+			Response error = responseFormat.getErrorResponse(ex, "Failed to fetch employee data");
+			return HttpResponse.serverError().body(error);
 		}
-
 	}
 
 	@Transactional
@@ -120,7 +123,7 @@ public class GetController {
 			if (!filterquery.equals("")) {
 				query = query + " WHERE " + filterquery;
 			}
-			
+
 //			if (!filterquery.equals("")) {
 //				query = query + " ORDER BY " + sort;
 //			}
