@@ -163,14 +163,14 @@ public class GetController {
 
 	}
 	
-	
+	// Working API for dynamic search
 	@Transactional
 	@Post("/dynamicorganizations")
-	public MutableHttpResponse<Map<String, Object>> getDynamicOrgnaizations(@Body Map<String, Object> body,
+	public HttpResponse<Response> getDynamicOrgnaizations(@Body Map<String, Object> body,
 	        @QueryValue("source") String source) {
 	    Map<String, Object> map = new HashMap<>();
 	    try {
-	        String include = "*";
+ 	        String include = "*";
 	        boolean requiretotalcount = false;
 	        String filterquery = "";
 	        int limit = 0;
@@ -196,7 +196,7 @@ public class GetController {
 	        if (body.containsKey("filter")) {
 	            @SuppressWarnings("unchecked")
 	            List<Object> filter = (List<Object>) body.get("filter");
-	            filterquery = function2(filter);
+	            filterquery = function6(filter);
 	            filterquery = filterquery.replace("startswith", "LIKE");
 	            filterquery = filterquery.replace("contains", "LIKE");
 	            filterquery = "(" + filterquery + ")";
@@ -261,19 +261,18 @@ public class GetController {
 	            total = ((Number) d1.getSingleResult()).intValue();
 	        }
 	        map.put("count", total);
-
-	        return HttpResponse.ok(map);
+	        Response success = responseFormat.getSuccessResponse(map);
+	        return  HttpResponse.ok(success);
 
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
-	        map.put("response", "Something Went Wrong");
-	        return HttpResponse.badRequest(map);
+	       // map.put("response", "Something Went Wrong");
+	        Response error = responseFormat.getErrorResponse(ex, "Failed to fetch dynamic organizations");
+	      //  return HttpResponse.badRequest(map);
+	        return HttpResponse.serverError(error);
 	    }
 	}
 	
-	
-	
-
 	public List<Map<String, Object>> convertTupleListToMapList(List<Tuple> tupleList) {
 		return tupleList.stream().map(tuple -> {
 			Map<String, Object> resultMap = new HashMap<>();
@@ -350,7 +349,7 @@ public class GetController {
 		return qq;
 
 	}
-
+	
 	static String function3(List<Object> filterData) {
 		StringBuilder result = new StringBuilder();
 
@@ -384,6 +383,57 @@ public class GetController {
 		}
 
 		return result.toString();
+	}
+	
+	
+	// working
+	static String function6(List<Object> filterdata) {
+	    StringBuilder qq = new StringBuilder();
+
+	    for (int i = 0; i < filterdata.size(); i++) {
+	        Object element = filterdata.get(i);
+	        String className = element.getClass().getSimpleName();
+
+	        if (className.equals("ArrayList")) {
+	            @SuppressWarnings("unchecked")
+	            List<Object> innerList = (List<Object>) element;
+
+	            if (innerList.size() == 3 && innerList.get(0) instanceof String && innerList.get(1) instanceof String) {
+	                String field = (String) innerList.get(0);
+	                String operator = (String) innerList.get(1);
+	                Object value = innerList.get(2);
+
+	                if (value instanceof String) {
+	                    String stringValue = (String) value;
+
+	                    if (operator.equals("startswith")) {
+	                        stringValue = "'"+ stringValue + "%'";
+	                        operator = "LIKE";
+	                    } else if (operator.equals("contains")) {
+	                        stringValue = "'%" + stringValue + "%'";
+	                        operator = "LIKE";
+	                    } else {
+	                        stringValue = "'" + stringValue + "'";
+	                    }
+
+	                    qq.append(field).append(" ").append(operator).append(" ").append(stringValue);
+	                } else {
+	                    // Non-string value
+	                    qq.append(field).append(" ").append(operator).append(" ").append(value);
+	                }
+	            } else {
+	                // Nested group
+	            	qq.append("(").append(function6(innerList)).append(")");
+	            }
+	        } else if (className.equals("String")) {
+	            String logicalOp = (String) element;
+	            if (logicalOp.equalsIgnoreCase("and") || logicalOp.equalsIgnoreCase("or")) {
+	                qq.append(" ").append(logicalOp).append(" ");
+	            }
+	        }
+	    }
+
+	    return qq.toString();
 	}
 
 }
