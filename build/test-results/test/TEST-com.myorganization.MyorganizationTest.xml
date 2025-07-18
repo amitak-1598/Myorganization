@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.myorganization.MyorganizationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-07-18T09:03:27" hostname="AMIT-PC" time="0.057">
+<testsuite name="com.myorganization.MyorganizationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-07-18T09:41:34" hostname="AMIT-PC" time="0.057">
   <properties/>
   <testcase name="testItWorks()" classname="com.myorganization.MyorganizationTest" time="0.057"/>
-  <system-out><![CDATA[14:33:26.129 [Test worker] INFO  i.m.c.DefaultApplicationContext$RuntimeConfiguredEnvironment - Established active environments: [test]
-14:33:26.257 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-14:33:26.426 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-14:33:26.611 [Test worker] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.15.Final
-14:33:26.750 [Test worker] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
-14:33:26.844 [Test worker] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL55Dialect
-14:33:27.660 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-14:33:27.669 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+  <system-out><![CDATA[15:11:33.171 [Test worker] INFO  i.m.c.DefaultApplicationContext$RuntimeConfiguredEnvironment - Established active environments: [test]
+15:11:33.307 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+15:11:33.471 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+15:11:33.651 [Test worker] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.15.Final
+15:11:33.778 [Test worker] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+15:11:33.874 [Test worker] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL55Dialect
+15:11:34.698 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+15:11:34.704 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
