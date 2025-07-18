@@ -24,8 +24,8 @@ public class AmitEdge {
 	ResponseFormat responseFormat;
 
 	@Post("/contactus")
-	public HttpResponse<Response> submitContactForm(@Body Map<String, Object> body,
-			@QueryValue("source") String source) {
+	public HttpResponse<Response> submitContactForm(@Body Map<String, Object> body
+			) {
 		try {
 			String saved = contactusservice.postContactUs(body);
 			Response success = responseFormat.getSuccessResponse(saved);
