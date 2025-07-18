@@ -9,7 +9,7 @@ micronaut:
         web:
           allowed-origins:
             - http://localhost:3000
-            - https://amitak.github.io     # ✅ Your GitHub Pages URL
+            - https://amitak-1598.github.io/amitedge    # ✅ Your GitHub Pages URL
             - https://dashboard.amitak.xyz # ✅ Your own domain (optional)
           allowed-methods:
             - GET
