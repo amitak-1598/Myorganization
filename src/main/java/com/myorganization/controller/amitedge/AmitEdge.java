@@ -12,9 +12,11 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
+import io.micronaut.http.server.cors.CrossOrigin;
 import jakarta.inject.Inject;
 
 @Controller
+@CrossOrigin
 public class AmitEdge {
 
 	@Inject
