@@ -1,7 +1,7 @@
 Thumbs.db
 .DS_Store
 .gradle
-build/
+# build/
 target/
 out/
 .micronaut/
@@ -13,3 +13,4 @@ out/
 .settings
 .classpath
 .factorypath
+/build/

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.myorganization.MyorganizationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-07-19T06:49:31" hostname="AMIT-PC" time="0.056">
+  <properties/>
+  <testcase name="testItWorks()" classname="com.myorganization.MyorganizationTest" time="0.056"/>
+  <system-out><![CDATA[12:19:30.180 [Test worker] INFO  i.m.c.DefaultApplicationContext$RuntimeConfiguredEnvironment - Established active environments: [test]
+12:19:30.323 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+12:19:30.520 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+12:19:30.693 [Test worker] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.15.Final
+12:19:30.817 [Test worker] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+12:19:30.911 [Test worker] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL55Dialect
+12:19:31.752 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+12:19:31.758 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -12,9 +12,11 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
+import io.micronaut.http.server.cors.CrossOrigin;
 import jakarta.inject.Inject;
 
 @Controller
+@CrossOrigin
 public class AmitEdge {
 
 	@Inject
@@ -24,8 +26,8 @@ public class AmitEdge {
 	ResponseFormat responseFormat;
 
 	@Post("/contactus")
-	public HttpResponse<Response> submitContactForm(@Body Map<String, Object> body,
-			@QueryValue("source") String source) {
+	public HttpResponse<Response> submitContactForm(@Body Map<String, Object> body
+			) {
 		try {
 			String saved = contactusservice.postContactUs(body);
 			Response success = responseFormat.getSuccessResponse(saved);
